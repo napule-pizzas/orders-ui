@@ -1,4 +1,4 @@
-# NapuleApp
+![Napule Logo](./src/assets/img/logo-napule-pizzas-366x366.png)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
 
