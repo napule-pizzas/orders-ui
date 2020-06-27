@@ -1,0 +1,87 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+$nap-palette-primary: (
+  50: #ffffff,
+  100: #efc3c4,
+  200: #e39698,
+  300: #d55e61,
+  400: #ce4549,
+  500: #c23337,
+  600: #aa2d30,
+  700: #912629,
+  800: #962c2d,
+  900: #611a1c,
+  A100: #fef6f6,
+  A200: #f89598,
+  A400: #e2454a,
+  A700: #d33b40,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff
+  )
+);
+
+$nap-palette-accent: (
+  50: #ffffff,
+  100: #fbf3dc,
+  200: #f5e2a9,
+  300: #eecd69,
+  400: #ebc34d,
+  500: #e8ba32,
+  600: #e2af19,
+  700: #c79a16,
+  800: #ab8513,
+  900: #8f6f10,
+  A100: #ffffff,
+  A200: #ffecb4,
+  A400: #fad053,
+  A700: #f0c444,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000
+  )
+);
+
+$nap-theme-primary: mat-palette($nap-palette-primary);
+$nap-theme-accent: mat-palette($nap-palette-accent);
+$nap-theme-warn: mat-palette($mat-red);
+$nap-theme-success: mat-palette($mat-light-green);
+$nap-theme-info: mat-palette($mat-blue);
+
+$nap-theme: mat-light-theme($nap-theme-primary, $nap-theme-accent, $nap-theme-warn);
+
+@include angular-material-theme($nap-theme);
+
+:root {
+  --color-primary: #{mat-color($nap-theme-primary)};
+  --color-accent: #{mat-color($nap-theme-accent)};
+  --color-warn: #{mat-color($nap-theme-warn)};
+  --color-success: #{mat-color($nap-theme-success)};
+  --color-info: #{mat-color($nap-theme-info)};
+}

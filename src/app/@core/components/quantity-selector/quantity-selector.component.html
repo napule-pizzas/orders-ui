@@ -1,0 +1,11 @@
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button mat-icon-button color="accent" aria-label="aumentar" (click)="increaseQuantity()">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <span class="quantity">{{ quantity }}</span>
+
+  <button mat-icon-button color="accent" aria-label="disminuir" (click)="decreaseQuantity()">
+    <mat-icon>remove</mat-icon>
+  </button>
+</div>

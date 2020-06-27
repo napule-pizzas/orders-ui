@@ -1,0 +1,15 @@
+<p>Ingresá tu número de teléfono</p>
+
+<mat-form-field>
+  <mat-label>Telfono</mat-label>
+  <input matInput autocomplete="off" (input)="findCustomerByPhone($event.target.value)" />
+</mat-form-field>
+
+<div *ngIf="customer$ | async as customer">
+  <p>Hola {{ customer.firstName }}!!</p>
+  <p>
+    Te vamos a enviar tu pedido a {{ customer.address1 }} {{ customer.address2 ? customer.address2 : '' }},
+    {{ customer.city }}
+  </p>
+  <button>Editar</button>
+</div>

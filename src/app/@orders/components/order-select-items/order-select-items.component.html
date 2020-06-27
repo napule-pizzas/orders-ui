@@ -1,0 +1,9 @@
+<p>¡COMBINALAS COMO QUIERAS!</p>
+<p>Pedido minimo de 2 pizzas</p>
+<nap-order-items-form [pizzas]="pizzas" (pizzasQuantityChange)="onPizzasQuantityChange($event)"></nap-order-items-form>
+<p>
+  Pizzas en el pedido: <span *ngIf="order.totalItems">{{ order.totalItems }}</span>
+</p>
+<p>
+  Total: <span *ngIf="order.totalAmount">${{ order.totalAmount }}</span>
+</p>
