@@ -45,7 +45,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <div>
+      <div fxLayout="row" fxLayoutAlign="center center">
         <button mat-button (click)="cancelEditCustomerAddress()">Cancelar</button>
         <button mat-button color="primary" (click)="editCustomerAddress()" [disabled]="customerForm.invalid">
           Aceptar
