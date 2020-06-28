@@ -42,7 +42,7 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
         break;
     }
 
-    this.manageOrderState();
+    this.ordersService.order.next(this.order);
   }
 
   private manageOrderState() {
@@ -53,7 +53,7 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
         break;
       case ORDER_STATE.SETTING_CUSTOMER_DATA:
         this.actionButtonText = 'PAGAR';
-        this.displayActionButton = true; // customerForm.valid;
+        this.displayActionButton = !!this.order.customer && !!this.order.customer.address;
         break;
       default:
         break;

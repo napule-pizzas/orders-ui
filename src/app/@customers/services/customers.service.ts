@@ -7,7 +7,7 @@ const mockedCustomer = {
   firstName: 'Miguel',
   lastName: 'Senosiain',
   phone: '2616631796',
-  address1: 'Verdaguer 436',
+  address: 'Verdaguer 436',
   city: 'Godoy Cruz'
 };
 

@@ -3,7 +3,6 @@ export interface ICustomer {
   firstName: string;
   lastName: string;
   phone: string;
-  address1: string;
-  address2?: string;
+  address: string;
   city: string;
 }
