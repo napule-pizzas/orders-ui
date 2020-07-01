@@ -3,7 +3,7 @@ const app = express();
 
 app.use(static(__dirname + '/dist'));
 
-app.all('*', (req, res) => {
+app.all('*', (rq, res) => {
   res.status(200).sendFile(__dirname + '/dist/index.html');
 });
 
