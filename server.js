@@ -1,10 +1,11 @@
 const express = require('express');
+
 const app = express();
 
-app.use(static(__dirname + '/dist'));
+app.use(express.static('./dist/napule-orders-ui'));
 
-app.all('*', (req, res) => {
-  res.status(200).sendFile(__dirname + '/dist/index.html');
-});
+app.get('/*', (req, res) =>
+    res.sendFile('index.html', {root: 'dist/napule-orders-ui/'}),
+);
 
 app.listen(process.env.PORT || 8080);
