@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "napule-app": {
+    "napule-orders-ui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/napule-app",
+            "outputPath": "dist/napule-orders-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "napule-app:build"
+            "browserTarget": "napule-orders-ui:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "napule-app:build:production"
+              "browserTarget": "napule-orders-ui:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "napule-app:build"
+            "browserTarget": "napule-orders-ui:build"
           }
         },
         "test": {
@@ -111,16 +111,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "napule-app:serve"
+            "devServerTarget": "napule-orders-ui:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "napule-app:serve:production"
+              "devServerTarget": "napule-orders-ui:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "napule-app"
+  "defaultProject": "napule-orders-ui"
 }
