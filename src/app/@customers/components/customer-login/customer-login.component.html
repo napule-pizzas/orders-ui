@@ -1,0 +1,29 @@
+<p>Por favor, inicia sesión o registrate</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="16px">
+  <mat-form-field>
+    <mat-label>Usuario</mat-label>
+    <input formControlName="username" matInput autocomplete="off" />
+    <mat-hint>correo electrónico o teléfono</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Contraseña</mat-label>
+    <input formControlName="password" matInput [type]="hidePassword ? 'password' : 'text'" />
+    <button
+      type="button"
+      mat-icon-button
+      matSuffix
+      (click)="hidePassword = !hidePassword"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hidePassword"
+    >
+      <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+    <button mat-raised-button color="primary">
+      INICIAR SESIÓN
+    </button>
+  </div>
+</form>
