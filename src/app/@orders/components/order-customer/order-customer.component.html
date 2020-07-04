@@ -1,56 +1,28 @@
-<div fxLayout="column" fxLyoutAlign="start center">
-  <ng-container *ngIf="!order.customer">
-    <p>Ingresá tu número de teléfono</p>
-    <mat-form-field>
-      <mat-label>Teléfono</mat-label>
-      <input
-        matInput
-        autocomplete="off"
-        (input)="findCustomerByPhone($event.target.value)"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        digitOnly
-      />
-      <mat-hint>cod. area + número, si es celular sin 15. ej: 2616655577</mat-hint>
-    </mat-form-field>
-  </ng-container>
+<ng-container *ngIf="showLogin">
+  <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="16px">
+    <nap-customer-login></nap-customer-login>
+    <a href="javascript:void(0)" (click)="register()"> Registrarme </a>
+  </div>
+</ng-container>
 
-  <ng-container *ngIf="order.customer && !editingAddress">
-    <p>{{ order.customer.phone }}</p>
+<ng-container *ngIf="order?.customer && !editingAddress">
+  <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="8px">
+    <p>{{ order.customer.firstName }}, vamos a enviar tu pedido a:</p>
     <p>
-      Hola {{ order.customer.firstName }}!<br />
-      Vamos a enviar tu pedido a<br />
       {{ order.customer.address }}, {{ order.customer.city }}
+      <a href="javascript:void(0)" (click)="showEditCustomerAddressForm()">
+        <mat-icon class="edit-customer-icon" color="accent">edit</mat-icon>
+      </a>
     </p>
-    <a class="edit-customer-link" href="javascript:void(0)" (click)="showEditCustomerAddressForm()">
-      Modificar domicilio
-      <mat-icon class="edit-customer-icon" color="accent">edit</mat-icon>
-    </a>
-  </ng-container>
 
-  <ng-container *ngIf="editingAddress">
-    <p>{{ order.customer.firstName }}, decinos dónde querés recibir tu pedido:</p>
-    <div fxLayout="column" fxLayoutGap="16px" [formGroup]="customerForm">
-      <mat-form-field>
-        <mat-label>Dirección</mat-label>
-        <input matInput autocomplete="off" formControlName="address" />
-        <mat-hint>Calle, número, piso y departamento</mat-hint>
-      </mat-form-field>
+    <a href="javascript:void(0)" (click)="logout()">¿No eres {{ order.customer.firstName }}? Cerrar Sesión </a>
+  </div>
+</ng-container>
 
-      <mat-form-field>
-        <mat-label>Localidad</mat-label>
-        <mat-select autocomplete="off" formControlName="city">
-          <mat-option *ngFor="let department of departments" [value]="department">
-            {{ department }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div fxLayout="row" fxLayoutAlign="center center">
-        <button mat-button (click)="cancelEditCustomerAddress()">Cancelar</button>
-        <button mat-button color="primary" (click)="editCustomerAddress()" [disabled]="customerForm.invalid">
-          Aceptar
-        </button>
-      </div>
-    </div>
-  </ng-container>
-</div>
+<ng-container *ngIf="editingAddress">
+  <nap-customer-edit-address></nap-customer-edit-address>
+</ng-container>
+
+<ng-container *ngIf="creatingCustomer">
+  <nap-customer-create></nap-customer-create>
+</ng-container>

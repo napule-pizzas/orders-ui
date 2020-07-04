@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IOrder, ORDER_STATE } from '../../order.model';
 import { OrdersService } from '../../services/orders.service';
 import { takeUntil } from 'rxjs/operators';
@@ -17,16 +17,13 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
 
   ORDER_STATE = ORDER_STATE;
 
-  constructor(private ordersService: OrdersService) {
+  constructor(private cd: ChangeDetectorRef, private ordersService: OrdersService) {
     super();
   }
 
   ngOnInit(): void {
-    this.ordersService.order.next({ state: ORDER_STATE.SELECTING_ITEMS, items: [] } as IOrder);
-
     this.ordersService.order.pipe(takeUntil(this.onDestroy$)).subscribe((order: IOrder) => {
-      this.order = order;
-      this.manageOrderState();
+      this.manageOrderState(order);
     });
   }
 
@@ -45,7 +42,8 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
     this.ordersService.order.next(this.order);
   }
 
-  private manageOrderState() {
+  private manageOrderState(order: IOrder) {
+    this.order = order;
     switch (this.order.state) {
       case ORDER_STATE.SELECTING_ITEMS:
         this.actionButtonText = 'PEDIR';
@@ -53,12 +51,21 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
         break;
       case ORDER_STATE.SETTING_CUSTOMER_DATA:
         this.actionButtonText = 'PAGAR';
-        this.displayActionButton = !!this.order.customer && !!this.order.customer.address;
+        this.displayActionButton = !!this.order.customer;
         break;
       default:
         break;
     }
 
-    console.log('#manageOrderState', 'Order', this.order, this.displayActionButton, this.actionButtonText);
+    console.log(
+      '#manageOrderState',
+      'Order',
+      this.order,
+      'Display AB',
+      this.displayActionButton,
+      this.actionButtonText
+    );
+
+    this.cd.detectChanges();
   }
 }
