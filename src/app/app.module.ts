@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
-import { DigitOnlyModule } from '@uiowa/digit-only';
 
 import { JwtInterceptor } from './@core/interceptors/jwt.interceptor';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,8 +23,7 @@ import { AppComponent } from './app.component';
           return localStorage.getItem('jwt-token');
         }
       }
-    }),
-    DigitOnlyModule
+    })
   ],
   providers: [
     {

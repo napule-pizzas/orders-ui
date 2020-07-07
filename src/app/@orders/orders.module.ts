@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DigitOnlyModule } from '@uiowa/digit-only';
 import { ordersRoutes } from './orders.routes';
 import { CustomersModule } from '../@customers/customers.module';
 import { CoreModule } from '../@core/core.module';
@@ -38,8 +37,7 @@ const AngularaterialModules = [
     FlexLayoutModule,
     ...AngularaterialModules,
     CoreModule,
-    CustomersModule,
-    DigitOnlyModule
+    CustomersModule
   ]
 })
 export class OrdersModule {}
