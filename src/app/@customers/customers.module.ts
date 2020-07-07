@@ -6,13 +6,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { CustomerLoginComponent } from './components/customer-login/customer-login.component';
-import { CustomerEditAddressComponent } from './components/customer-edit-address/customer-edit-address.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { CoreModule } from '../@core/core.module';
+import { CustomerLoginComponent } from './components/customer-login/customer-login.component';
+import { CustomerEditAddressComponent } from './components/customer-edit-address/customer-edit-address.component';
 import { CustomerCreateComponent } from './components/customer-create/customer-create.component';
 
-const AngularaterialModules = [
+const AngularMaterialModules = [
   MatIconModule,
   MatButtonModule,
   MatFormFieldModule,
@@ -23,7 +24,7 @@ const AngularaterialModules = [
 
 @NgModule({
   declarations: [CustomerLoginComponent, CustomerEditAddressComponent, CustomerCreateComponent],
-  imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, ...AngularaterialModules],
+  imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, ...AngularMaterialModules, CoreModule],
   exports: [CustomerLoginComponent, CustomerEditAddressComponent, CustomerCreateComponent]
 })
 export class CustomersModule {}

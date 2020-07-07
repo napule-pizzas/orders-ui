@@ -1,0 +1,102 @@
+<form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+  <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="0 0 380px" style="padding: 0 20px;">
+    <p class="text-center">Necesitamos tus datos para poder enviarte <br />las + ricas pizzas!</p>
+
+    <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
+      <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Nombre</mat-label>
+        <input matInput autocomplete="off" formControlName="firstName" required />
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Apellido</mat-label>
+        <input matInput autocomplete="off" formControlName="lastName" required />
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
+      <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Teléfono</mat-label>
+        <input matInput autocomplete="off" formControlName="phone" inputmode="tel" required />
+        <mat-hint>cod. área y número</mat-hint>
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput type="email" autocomplete="off" formControlName="email" required />
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
+      <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Dirección</mat-label>
+        <input matInput autocomplete="off" formControlName="address" required />
+        <mat-hint>Calle, número, piso y departamento</mat-hint>
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Localidad</mat-label>
+        <mat-select autocomplete="off" formControlName="city" required>
+          <mat-option *ngFor="let city of cities" [value]="city">
+            {{ city }}
+          </mat-option>
+        </mat-select>
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
+      <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          autocomplete="off"
+          formControlName="password"
+          [type]="hidePassword ? 'password' : 'text'"
+          (input)="onPasswordInput()"
+          required
+        />
+        <!-- <button
+          type="button"
+          matSuffix
+          mat-icon-button
+          (click)="hidePassword = !hidePassword"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePassword"
+        >
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button> -->
+        <mat-hint>6 a 12 caracteres</mat-hint>
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard" fxFlex>
+        <mat-label>Confirmación</mat-label>
+        <input
+          matInput
+          autocomplete="off"
+          formControlName="confirmation"
+          [type]="hidePassword ? 'password' : 'text'"
+          (input)="onPasswordInput()"
+          required
+        />
+
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px" style="margin: 16px 0;">
+      <button mat-raised-button color="primary">
+        ACEPTAR
+      </button>
+      <button mat-raised-button type="button" (click)="cancel()">
+        CANCELAR
+      </button>
+    </div>
+  </div>
+</form>
