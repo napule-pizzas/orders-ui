@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "src/helpers.scss",
               "src/napule-theme.scss",
               "src/styles.scss"
             ],
