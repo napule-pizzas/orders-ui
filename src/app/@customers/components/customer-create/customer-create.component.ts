@@ -2,17 +2,22 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CustomersService } from '../../services/customers.service';
 import { NapuleValidators } from 'src/app/@core/classes/custom.validators';
+import { takeUntil } from 'rxjs/operators';
+import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
+import { ICustomer } from '../../customer.model';
 
 @Component({
   selector: 'nap-customer-create',
   templateUrl: './customer-create.component.html',
   styleUrls: ['./customer-create.component.scss']
 })
-export class CustomerCreateComponent implements OnInit {
+export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit {
   customerForm: FormGroup;
   hidePassword = true;
   cities: string[];
-  constructor(private fb: FormBuilder, private customersService: CustomersService) {}
+  constructor(private fb: FormBuilder, private customersService: CustomersService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.customerForm = this.fb.group(
@@ -45,7 +50,12 @@ export class CustomerCreateComponent implements OnInit {
 
   onSubmit() {
     console.log('le form', this.customerForm.value);
-  }
 
-  cancel() {}
+    this.customersService
+      .createCustomer(this.customerForm.value)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((customer: ICustomer) => {
+        console.log('CUSTOMEr CREATED', customer);
+      });
+  }
 }
