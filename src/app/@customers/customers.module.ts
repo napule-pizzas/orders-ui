@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CoreModule } from '../@core/core.module';
 import { CustomerLoginComponent } from './components/customer-login/customer-login.component';
 import { CustomerEditAddressComponent } from './components/customer-edit-address/customer-edit-address.component';
@@ -19,7 +20,8 @@ const AngularMaterialModules = [
   MatFormFieldModule,
   MatInputModule,
   MatSelectModule,
-  MatOptionModule
+  MatOptionModule,
+  MatCheckboxModule
 ];
 
 @NgModule({

@@ -16,19 +16,22 @@
       </mat-form-field>
     </div>
 
-    <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
-      <mat-form-field appearance="standard" fxFlex>
-        <mat-label>Teléfono</mat-label>
-        <input matInput autocomplete="off" formControlName="phone" inputmode="tel" required />
-        <mat-hint>cod. área y número</mat-hint>
-        <mat-error matErrorMessages></mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="standard" fxFlex>
+    <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign.gt-md="start stretch" fxLayoutGap.gt-md="8px">
+      <mat-form-field appearance="standard" fxFlex fxFlex.gt-md="50%">
         <mat-label>Correo electrónico</mat-label>
         <input matInput type="email" autocomplete="off" formControlName="email" required />
         <mat-error matErrorMessages></mat-error>
       </mat-form-field>
+
+      <div fxFlex fxFlex.gt-md="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <mat-form-field appearance="standard" fxFlex fxFlex.gt-md="60%">
+          <mat-label>Teléfono</mat-label>
+          <input matInput autocomplete="off" formControlName="phone" inputmode="tel" required />
+          <mat-hint>cod. área y número</mat-hint>
+          <mat-error matErrorMessages></mat-error>
+        </mat-form-field>
+        <mat-checkbox formControlName="mobile" name="mobile">Celular</mat-checkbox>
+      </div>
     </div>
 
     <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
@@ -94,8 +97,8 @@
       <button mat-raised-button color="primary">
         ACEPTAR
       </button>
-      <button mat-raised-button type="button" (click)="cancel()">
-        CANCELAR
+      <button mat-raised-button type="reset">
+        LIMPIAR
       </button>
     </div>
   </div>

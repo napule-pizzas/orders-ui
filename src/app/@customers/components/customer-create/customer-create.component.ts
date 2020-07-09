@@ -20,6 +20,7 @@ export class CustomerCreateComponent implements OnInit {
         firstName: [null, Validators.required],
         lastName: [null, Validators.required],
         phone: [null, [Validators.required, NapuleValidators.phone_ar]],
+        mobile: null,
         email: [null, [Validators.required, Validators.email]],
         address: [null, Validators.required],
         city: [null, Validators.required],

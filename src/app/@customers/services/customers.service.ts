@@ -62,6 +62,10 @@ export class CustomersService {
       .pipe(catchError(err => throwError(err)));
   }
 
+  createCustomer(payload: Partial<ICustomer>) {
+    return this.httpClient.post<ICustomer>(`${this.apiUrl}users`, payload).pipe(catchError(err => throwError(err)));
+  }
+
   get cities() {
     return [
       'Capital',
