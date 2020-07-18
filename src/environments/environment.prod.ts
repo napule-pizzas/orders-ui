@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  APIEndpoint: 'https://napule-api.herokuapp.com/'
+  APIEndpoint: 'https://napule-api.herokuapp.com/v1/'
 };
