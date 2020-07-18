@@ -1,24 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { OrderCreateComponent } from './@orders/components/order-create/order-create.component';
+import { CustomerConfirmationComponent } from './@customers/components/customer-confirmation/customer-confirmation.component';
+import { CustomerTokenResolver } from './@customers/resolvers/customer-token.resolver';
+import { PageNotFoundComponent } from './@core/components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
-    path: 'orders',
-    loadChildren: () => import('./@orders/orders.module').then(m => m.OrdersModule)
+    path: '',
+    component: OrderCreateComponent
   },
   {
-    path: '',
-    redirectTo: '/orders',
-    pathMatch: 'full'
-  }
+    path: 'confirmation/:token',
+    component: CustomerConfirmationComponent,
+    resolve: {
+      customer$: CustomerTokenResolver
+    }
+  },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
       useHash: false,
-      enableTracing: false,
-      onSameUrlNavigation: 'reload'
+      enableTracing: false
     })
   ],
   exports: [RouterModule]

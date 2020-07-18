@@ -1,0 +1,31 @@
+<div fxLayout="column" fxLayoutAlign="center center">
+  <ng-container *ngIf="customer && !isVerified">
+    <p class="text-center">
+      Hola {{ customer?.firstName }}, por favor ingresá el email con el que te registraste para activar tu cuenta
+    </p>
+    <form
+      [formGroup]="confirmationForm"
+      (ngSubmit)="onSubmit()"
+      fxLayout="column"
+      fxLayoutAlign="start center"
+      fxLayoutGap="16px"
+    >
+      <mat-form-field appearance="standard" class="confirmation-input">
+        <mat-label>Correo electrónico</mat-label>
+        <input formControlName="username" matInput autocomplete="off" />
+        <mat-error matErrorMessages></mat-error>
+      </mat-form-field>
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <button mat-raised-button color="primary" [disabled]="confirmationForm.invalid">
+          CONFIRMAR REGISTRO
+        </button>
+      </div>
+    </form>
+  </ng-container>
+
+  <ng-container *ngIf="isVerified">
+    <p class="text-center">Esta cuenta ya fue activada</p>
+    <a href="/">Inicio</a>
+  </ng-container>
+</div>

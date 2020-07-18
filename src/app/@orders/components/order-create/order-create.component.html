@@ -1,6 +1,4 @@
 <div fxLayout="column" fxLayoutAlign="center center">
-  <img src="assets/img/logo-napule-pizzas-324x127.png" class="main-logo" alt="logo napule" />
-
   <ng-container [ngSwitch]="order?.state">
     <nap-order-select-items *ngSwitchCase="ORDER_STATE.SELECTING_ITEMS"></nap-order-select-items>
 

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable, of, Subject, BehaviorSubject, throwError } from 'rxjs';
-import { ICustomer } from '../customer.model';
-import { catchError, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable, Subject, BehaviorSubject, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+import { ICustomer } from '../customer.model';
 
 interface AuthResponse {
   token: string;
@@ -17,9 +18,7 @@ export class CustomersService {
   token: string;
   customer: Subject<ICustomer> = new BehaviorSubject(null);
 
-  // TODO get api url from ENV or config
-  private apiUrl = 'http://localhost:8182/v1/';
-
+  private apiUrl = environment.APIEndpoint;
   constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) {
     const token = localStorage.getItem('jwt-token');
     if (token) {
@@ -64,6 +63,18 @@ export class CustomersService {
 
   createCustomer(payload: Partial<ICustomer>) {
     return this.httpClient.post<ICustomer>(`${this.apiUrl}users`, payload).pipe(catchError(err => throwError(err)));
+  }
+
+  getInactiveCustomerOfToken(token: string): Observable<ICustomer> {
+    return this.httpClient
+      .get<ICustomer>(`${this.apiUrl}users/inactive/${token}`)
+      .pipe(catchError(err => throwError(err)));
+  }
+
+  confirmCustomer(payload: { token: string; username: string }): Observable<ICustomer> {
+    return this.httpClient
+      .post<ICustomer>(`${this.apiUrl}users/confirm`, payload)
+      .pipe(catchError(err => throwError(err)));
   }
 
   get cities() {

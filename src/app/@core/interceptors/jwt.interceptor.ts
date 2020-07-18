@@ -31,7 +31,6 @@ export class JwtInterceptor implements HttpInterceptor {
   }
 
   handleError(error: HttpErrorResponse) {
-    console.error(error);
-    return throwError('Ocurrió un error en servidor.');
+    return throwError(error.error);
   }
 }

@@ -54,8 +54,14 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
     this.customersService
       .createCustomer(this.customerForm.value)
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe((customer: ICustomer) => {
-        console.log('CUSTOMEr CREATED', customer);
-      });
+      .subscribe(
+        (customer: ICustomer) => {
+          console.log('CUSTOMER CREATED', customer);
+          //redirect a login
+        },
+        err => {
+          console.log('Le error', err);
+        }
+      );
   }
 }

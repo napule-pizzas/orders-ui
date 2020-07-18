@@ -13,6 +13,7 @@ import { CoreModule } from '../@core/core.module';
 import { CustomerLoginComponent } from './components/customer-login/customer-login.component';
 import { CustomerEditAddressComponent } from './components/customer-edit-address/customer-edit-address.component';
 import { CustomerCreateComponent } from './components/customer-create/customer-create.component';
+import { CustomerConfirmationComponent } from './components/customer-confirmation/customer-confirmation.component';
 
 const AngularMaterialModules = [
   MatIconModule,
@@ -24,9 +25,16 @@ const AngularMaterialModules = [
   MatCheckboxModule
 ];
 
+const Components = [
+  CustomerLoginComponent,
+  CustomerEditAddressComponent,
+  CustomerCreateComponent,
+  CustomerConfirmationComponent
+];
+
 @NgModule({
-  declarations: [CustomerLoginComponent, CustomerEditAddressComponent, CustomerCreateComponent],
+  declarations: [...Components],
   imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, ...AngularMaterialModules, CoreModule],
-  exports: [CustomerLoginComponent, CustomerEditAddressComponent, CustomerCreateComponent]
+  exports: [...Components]
 })
 export class CustomersModule {}

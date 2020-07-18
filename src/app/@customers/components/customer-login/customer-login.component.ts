@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
 import { CustomersService } from '../../services/customers.service';
 import { takeUntil } from 'rxjs/operators';
+import { CUSTOMER_ERRORS } from '../../customers.d.type';
+import { BREAKPOINT } from '@angular/flex-layout';
 
 @Component({
   selector: 'nap-customer-login',
@@ -11,6 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
   loginForm: FormGroup;
+  errorMessage: string;
   hidePassword = true;
 
   constructor(private fb: FormBuilder, private customersService: CustomersService) {
@@ -19,8 +22,8 @@ export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: [null, Validators.required],
-      password: [null, Validators.required]
+      username: [null, [Validators.required, Validators.email]],
+      password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(12)]]
     });
   }
 
@@ -34,7 +37,15 @@ export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
           localStorage.setItem('jwt-token', response.token);
           this.customersService.customer.next(response.user);
         },
-        err => console.log(err) // TODO display error message to the user
+        err => {
+          switch (err.msg) {
+            case CUSTOMER_ERRORS.USER_UNAUTHORIZED:
+              this.errorMessage = 'Usuario o contraseña incorrectos';
+              break;
+            default:
+              return;
+          }
+        }
       );
   }
 }

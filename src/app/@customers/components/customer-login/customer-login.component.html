@@ -1,29 +1,33 @@
 <p>Por favor, inicia sesión o registrate</p>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="16px">
-  <mat-form-field appearance="standard">
-    <mat-label>Usuario</mat-label>
-    <input formControlName="username" matInput autocomplete="off" />
-    <mat-hint>correo electrónico o teléfono</mat-hint>
-  </mat-form-field>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="16px">
+    <mat-form-field appearance="standard">
+      <mat-label>Correo Electrónico</mat-label>
+      <input formControlName="username" matInput autocomplete="off" />
+      <mat-error matErrorMessages></mat-error>
+    </mat-form-field>
 
-  <mat-form-field appearance="standard">
-    <mat-label>Contraseña</mat-label>
-    <input formControlName="password" matInput [type]="hidePassword ? 'password' : 'text'" />
-    <button
-      type="button"
-      mat-icon-button
-      matSuffix
-      (click)="hidePassword = !hidePassword"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="hidePassword"
-    >
-      <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-    </button>
-  </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>Contraseña</mat-label>
+      <input formControlName="password" matInput [type]="hidePassword ? 'password' : 'text'" />
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hidePassword"
+      >
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error matErrorMessages></mat-error>
+    </mat-form-field>
 
-  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-    <button mat-raised-button color="primary">
-      INICIAR SESIÓN
-    </button>
+    <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="8px">
+      <span>{{ errorMessage }}</span>
+      <button mat-raised-button color="primary" [disabled]="loginForm.invalid">
+        INICIAR SESIÓN
+      </button>
+    </div>
   </div>
 </form>
