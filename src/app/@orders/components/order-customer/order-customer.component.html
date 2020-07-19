@@ -25,6 +25,6 @@
 
 <ng-container *ngIf="creatingCustomer">
   <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="8px">
-    <nap-customer-create></nap-customer-create>
+    <nap-customer-create (cancel)="onCustomerCreateCancel()"></nap-customer-create>
   </div>
 </ng-container>

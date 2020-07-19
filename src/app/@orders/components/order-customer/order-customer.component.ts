@@ -55,4 +55,9 @@ export class OrderCustomerComponent extends BaseUnsubscriber implements OnInit {
     this.showLogin = false;
     this.creatingCustomer = true;
   }
+
+  onCustomerCreateCancel() {
+    this.showLogin = true;
+    this.creatingCustomer = false;
+  }
 }

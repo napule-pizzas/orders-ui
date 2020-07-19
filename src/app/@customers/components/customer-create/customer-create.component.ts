@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CustomersService } from '../../services/customers.service';
 import { NapuleValidators } from 'src/app/@core/classes/custom.validators';
 import { takeUntil } from 'rxjs/operators';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
 import { ICustomer } from '../../customer.model';
+import { OrdersService } from 'src/app/@orders/services/orders.service';
 
 @Component({
   selector: 'nap-customer-create',
@@ -12,10 +13,17 @@ import { ICustomer } from '../../customer.model';
   styleUrls: ['./customer-create.component.scss']
 })
 export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit {
+  @Output()
+  cancel: EventEmitter<void> = new EventEmitter<void>();
+  customer: ICustomer;
   customerForm: FormGroup;
   hidePassword = true;
   cities: string[];
-  constructor(private fb: FormBuilder, private customersService: CustomersService) {
+  constructor(
+    private fb: FormBuilder,
+    private orderService: OrdersService,
+    private customersService: CustomersService
+  ) {
     super();
   }
 
@@ -49,19 +57,24 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
   }
 
   onSubmit() {
-    console.log('le form', this.customerForm.value);
-
     this.customersService
       .createCustomer(this.customerForm.value)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(
         (customer: ICustomer) => {
-          console.log('CUSTOMER CREATED', customer);
-          //redirect a login
+          this.customer = customer;
         },
         err => {
           console.log('Le error', err);
         }
       );
+  }
+
+  done() {
+    this.orderService.initializeOrder();
+  }
+
+  goBack() {
+    this.cancel.emit();
   }
 }
