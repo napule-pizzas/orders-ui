@@ -14,7 +14,7 @@ const routes: Routes = [
     path: 'confirmation/:token',
     component: CustomerConfirmationComponent,
     resolve: {
-      customer$: CustomerTokenResolver
+      customerToken: CustomerTokenResolver
     }
   },
   { path: '**', component: PageNotFoundComponent }

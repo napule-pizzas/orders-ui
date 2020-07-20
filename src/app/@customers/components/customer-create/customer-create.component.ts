@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
 import { ICustomer } from '../../customer.model';
 import { OrdersService } from 'src/app/@orders/services/orders.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'nap-customer-create',
@@ -15,12 +16,12 @@ import { OrdersService } from 'src/app/@orders/services/orders.service';
 export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit {
   @Output()
   cancel: EventEmitter<void> = new EventEmitter<void>();
-  customer: ICustomer;
   customerForm: FormGroup;
   hidePassword = true;
   cities: string[];
   constructor(
     private fb: FormBuilder,
+    private snackBar: MatSnackBar,
     private orderService: OrdersService,
     private customersService: CustomersService
   ) {
@@ -62,16 +63,13 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(
         (customer: ICustomer) => {
-          this.customer = customer;
+          this.snackBar.open(`${customer.firstName} gracias por registrate. Revisá el correo.`);
+          this.orderService.initializeOrder();
         },
         err => {
           console.log('Le error', err);
         }
       );
-  }
-
-  done() {
-    this.orderService.initializeOrder();
   }
 
   goBack() {
