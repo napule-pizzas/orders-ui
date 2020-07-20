@@ -77,6 +77,10 @@ export class CustomersService {
       .pipe(catchError(err => throwError(err)));
   }
 
+  resendConfirmationEmail(userId: string) {
+    return this.httpClient.get(`${this.apiUrl}users/resend/${userId}`).pipe(catchError(err => throwError(err)));
+  }
+
   get cities() {
     return [
       'Capital',

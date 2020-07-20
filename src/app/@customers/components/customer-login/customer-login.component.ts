@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { takeUntil, switchMap } from 'rxjs/operators';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
 import { CustomersService } from '../../services/customers.service';
-import { takeUntil } from 'rxjs/operators';
 import { CUSTOMER_ERRORS } from '../../customers.d.type';
-import { BREAKPOINT } from '@angular/flex-layout';
 
 @Component({
   selector: 'nap-customer-login',
@@ -13,10 +13,11 @@ import { BREAKPOINT } from '@angular/flex-layout';
 })
 export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
   loginForm: FormGroup;
-  errorMessage: string;
   hidePassword = true;
 
-  constructor(private fb: FormBuilder, private customersService: CustomersService) {
+  private snackbarRef: MatSnackBarRef<SimpleSnackBar>;
+
+  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private customersService: CustomersService) {
     super();
   }
 
@@ -40,12 +41,32 @@ export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
         err => {
           switch (err.msg) {
             case CUSTOMER_ERRORS.USER_UNAUTHORIZED:
-              this.errorMessage = 'Usuario o contraseña incorrectos';
+              this.onUserUnauthorized();
+              break;
+            case CUSTOMER_ERRORS.USER_NOT_ACTIVE:
+              this.onUserNotActiveError(err.id);
               break;
             default:
               return;
           }
         }
       );
+  }
+
+  private onUserUnauthorized() {
+    this.snackBar.open('Usuario o contraseña incorrectos');
+  }
+
+  private onUserNotActiveError(userId: string) {
+    this.snackbarRef = this.snackBar.open('Cuenta no activada', 'REENVIAR MENSAJE DE CONFIRMACIÓN', {
+      duration: 5000
+    });
+    this.snackbarRef
+      .onAction()
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap(() => this.customersService.resendConfirmationEmail(userId))
+      )
+      .subscribe(() => this.snackBar.open('Mensaje de confirmacion reenviado.'));
   }
 }
