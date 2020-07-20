@@ -58,8 +58,8 @@ export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
   }
 
   private onUserNotActiveError(userId: string) {
-    this.snackbarRef = this.snackBar.open('Cuenta no activada', 'REENVIAR MENSAJE DE CONFIRMACIÓN', {
-      duration: 5000
+    this.snackbarRef = this.snackBar.open('Cuenta no activada', 'ENVIAR MENSAJE DE CONFIRMACIÓN', {
+      duration: 10000
     });
     this.snackbarRef
       .onAction()
