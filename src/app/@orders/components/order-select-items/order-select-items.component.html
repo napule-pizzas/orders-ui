@@ -1,6 +1,18 @@
-<p>¡COMBINALAS COMO QUIERAS!</p>
-<p>Pedido minimo de 2 pizzas</p>
+<p>¡COMBINALAS COMO QUIERAS! <br />Pedido minimo de 2 pizzas</p>
 <nap-order-items-form [pizzas]="pizzas" (pizzasQuantityChange)="onPizzasQuantityChange($event)"></nap-order-items-form>
+<div class="margin-sm-t">
+  <mat-form-field class="full-width">
+    <mat-select
+      (selectionChange)="onDeliveryDateSelected($event.value)"
+      placeholder="Fecha de entrega"
+      class="text-capitalize"
+    >
+      <mat-option *ngFor="let date of availableDeliveryDates" [value]="date" class="text-capitalize">
+        {{ date.format(DATE_FORMAT) }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <p>
   Pizzas en el pedido: <span *ngIf="order.totalItems">{{ order.totalItems }}</span>
 </p>

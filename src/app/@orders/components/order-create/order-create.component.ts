@@ -47,7 +47,7 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
     switch (this.order.state) {
       case ORDER_STATE.SELECTING_ITEMS:
         this.actionButtonText = 'PEDIR';
-        this.displayActionButton = this.order.totalItems >= 2;
+        this.displayActionButton = this.order.totalItems >= 2 && !!this.order.deliveryDate;
         break;
       case ORDER_STATE.SETTING_CUSTOMER_DATA:
         this.actionButtonText = 'PAGAR';
