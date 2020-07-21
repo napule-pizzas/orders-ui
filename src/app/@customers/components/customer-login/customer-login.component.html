@@ -24,7 +24,7 @@
     </mat-form-field>
 
     <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="8px">
-      <button mat-raised-button color="primary" [disabled]="loginForm.invalid">
+      <button mat-raised-button color="primary" [disabled]="loginForm.invalid || (isLoading | async)">
         INICIAR SESIÓN
       </button>
     </div>

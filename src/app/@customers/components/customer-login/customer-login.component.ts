@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { takeUntil, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
+import { LoadingIndicatorService } from 'src/app/@core/services/loading-indicator.service';
 import { CustomersService } from '../../services/customers.service';
 import { CUSTOMER_ERRORS } from '../../customers.d.type';
 
@@ -14,10 +16,16 @@ import { CUSTOMER_ERRORS } from '../../customers.d.type';
 export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
   loginForm: FormGroup;
   hidePassword = true;
+  isLoading: Subject<boolean> = this.loadingIndicatorService.isLoading;
 
   private snackbarRef: MatSnackBarRef<SimpleSnackBar>;
 
-  constructor(private fb: FormBuilder, private snackBar: MatSnackBar, private customersService: CustomersService) {
+  constructor(
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+    private loadingIndicatorService: LoadingIndicatorService,
+    private customersService: CustomersService
+  ) {
     super();
   }
 
@@ -44,7 +52,7 @@ export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
               this.onUserUnauthorized();
               break;
             case CUSTOMER_ERRORS.USER_NOT_ACTIVE:
-              this.onUserNotActiveError(err.id);
+              this.onUserNotActive(err.id);
               break;
             default:
               return;
@@ -57,7 +65,7 @@ export class CustomerLoginComponent extends BaseUnsubscriber implements OnInit {
     this.snackBar.open('Usuario o contraseña incorrectos');
   }
 
-  private onUserNotActiveError(userId: string) {
+  private onUserNotActive(userId: string) {
     this.snackbarRef = this.snackBar.open('Cuenta no activada', 'REENVIAR MENSAJE', {
       duration: 10000
     });
