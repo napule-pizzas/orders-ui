@@ -3,6 +3,9 @@
     <nap-order-select-items *ngSwitchCase="ORDER_STATE.SELECTING_ITEMS"></nap-order-select-items>
 
     <nap-order-customer *ngSwitchCase="ORDER_STATE.SETTING_CUSTOMER_DATA"> </nap-order-customer>
+    <div *ngSwitchCase="ORDER_STATE.PAYMENT_PENDING">
+      <p>Gracias! En un instante seras redirigido a Mercado Pago</p>
+    </div>
   </ng-container>
 
   <button *ngIf="displayActionButton" mat-raised-button (click)="nextState()">{{ actionButtonText }}</button>

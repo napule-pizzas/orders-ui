@@ -39,7 +39,6 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
         break;
       case ORDER_STATE.SETTING_CUSTOMER_DATA:
         this.order = { ...this.order, state: ORDER_STATE.PAYMENT_PENDING };
-        this.payOrder(this.order);
         break;
 
       default:
@@ -59,6 +58,11 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
       case ORDER_STATE.SETTING_CUSTOMER_DATA:
         this.actionButtonText = 'PAGAR';
         this.displayActionButton = !!this.order.customer;
+        break;
+      case ORDER_STATE.PAYMENT_PENDING:
+        this.actionButtonText = '';
+        this.displayActionButton = false;
+        this.payOrder(this.order);
         break;
       default:
         break;
@@ -81,7 +85,8 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
       .payOrder(order)
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(mpRes => {
-        this.document.location.href = mpRes.init_point;
+        console.log(mpRes);
+        // this.document.location.href = mpRes.init_point;
       });
   }
 }

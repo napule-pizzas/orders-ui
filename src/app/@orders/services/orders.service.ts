@@ -72,7 +72,6 @@ export class OrdersService {
         }
       },
       payment_methods: {
-        excluded_payment_methods: [],
         excluded_payment_types: excludedPaymentTypes,
         installments: 1,
         default_installments: 1
