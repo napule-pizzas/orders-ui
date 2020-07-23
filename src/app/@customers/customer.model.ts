@@ -3,8 +3,19 @@ export interface ICustomer {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
-  address: string;
+  phone: IPhone;
+  address: IAddress;
   city: string;
   password: string;
+}
+
+export interface IAddress {
+  zipCode: string;
+  street: string;
+  number: number;
+}
+
+export interface IPhone {
+  areaCode: number;
+  number: number;
 }

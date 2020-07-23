@@ -9,6 +9,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,10 @@ export class JwtInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('jwt-token');
+    const napuleAPIURL = environment.napuleAPIURL;
 
-    if (token) {
-      const cloned = request.clone({
-        headers: request.headers.set('Authorization', `Bearer ${token}`)
-      });
-
+    if (request.url.indexOf(napuleAPIURL) === 0 && token) {
+      const cloned = request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
       return next.handle(cloned).pipe(catchError(this.handleError));
     } else {
       return next.handle(request).pipe(catchError(this.handleError));

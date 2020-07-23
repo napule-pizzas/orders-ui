@@ -18,7 +18,7 @@ export class CustomersService {
   token: string;
   customer: Subject<ICustomer> = new BehaviorSubject(null);
 
-  private apiUrl = environment.APIEndpoint;
+  private napuleAPIURL = environment.napuleAPIURL;
   constructor(private httpClient: HttpClient, private jwtHelper: JwtHelperService) {
     const token = localStorage.getItem('jwt-token');
     if (token) {
@@ -36,7 +36,7 @@ export class CustomersService {
 
   login(username: string, password: string): Observable<AuthResponse> {
     return this.httpClient
-      .post<AuthResponse>(`${this.apiUrl}auth`, { username, password })
+      .post<AuthResponse>(`${this.napuleAPIURL}/auth`, { username, password })
       .pipe(catchError(err => throwError(err)));
   }
 
@@ -52,33 +52,37 @@ export class CustomersService {
   }
 
   getCustomer(customerId: string) {
-    return this.httpClient.get<ICustomer>(`${this.apiUrl}users/${customerId}`).pipe(catchError(err => throwError(err)));
+    return this.httpClient
+      .get<ICustomer>(`${this.napuleAPIURL}/users/${customerId}`)
+      .pipe(catchError(err => throwError(err)));
   }
 
   editCustomerAddress(payload: Partial<ICustomer>) {
     return this.httpClient
-      .patch<ICustomer>(`${this.apiUrl}users/${payload.id}`, payload)
+      .patch<ICustomer>(`${this.napuleAPIURL}/users/${payload.id}`, payload)
       .pipe(catchError(err => throwError(err)));
   }
 
   createCustomer(payload: Partial<ICustomer>) {
-    return this.httpClient.post<ICustomer>(`${this.apiUrl}users`, payload).pipe(catchError(err => throwError(err)));
+    return this.httpClient
+      .post<ICustomer>(`${this.napuleAPIURL}/users`, payload)
+      .pipe(catchError(err => throwError(err)));
   }
 
   getInactiveCustomerOfToken(token: string): Observable<ICustomer> {
     return this.httpClient
-      .get<ICustomer>(`${this.apiUrl}users/inactive/${token}`)
+      .get<ICustomer>(`${this.napuleAPIURL}/users/inactive/${token}`)
       .pipe(catchError(err => throwError(err)));
   }
 
   confirmCustomer(payload: { token: string; username: string }): Observable<ICustomer> {
     return this.httpClient
-      .post<ICustomer>(`${this.apiUrl}users/confirm`, payload)
+      .post<ICustomer>(`${this.napuleAPIURL}/users/confirm`, payload)
       .pipe(catchError(err => throwError(err)));
   }
 
   resendConfirmationEmail(userId: string) {
-    return this.httpClient.get(`${this.apiUrl}users/resend/${userId}`).pipe(catchError(err => throwError(err)));
+    return this.httpClient.get(`${this.napuleAPIURL}/users/resend/${userId}`).pipe(catchError(err => throwError(err)));
   }
 
   get cities() {

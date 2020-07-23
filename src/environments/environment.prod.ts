@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  APIEndpoint: 'https://api.napule.tk/v1/'
+  napuleAPIURL: 'https://api.napule.tk/v1',
+  mercadoPagoAPIURL: 'https://api.mercadopago.com/checkout'
 };

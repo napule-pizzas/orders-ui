@@ -1,8 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
 import { IOrder, ORDER_STATE } from '../../order.model';
 import { OrdersService } from '../../services/orders.service';
 import { takeUntil } from 'rxjs/operators';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'nap-order-create',
@@ -17,7 +18,11 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
 
   ORDER_STATE = ORDER_STATE;
 
-  constructor(private cd: ChangeDetectorRef, private ordersService: OrdersService) {
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private cd: ChangeDetectorRef,
+    private ordersService: OrdersService
+  ) {
     super();
   }
 
@@ -34,7 +39,9 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
         break;
       case ORDER_STATE.SETTING_CUSTOMER_DATA:
         this.order = { ...this.order, state: ORDER_STATE.PAYMENT_PENDING };
+        this.payOrder(this.order);
         break;
+
       default:
         break;
     }
@@ -67,5 +74,14 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
     );
 
     this.cd.detectChanges();
+  }
+
+  private payOrder(order: IOrder) {
+    this.ordersService
+      .payOrder(order)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(mpRes => {
+        this.document.location.href = mpRes.init_point;
+      });
   }
 }

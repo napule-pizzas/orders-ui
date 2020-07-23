@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  APIEndpoint: 'http://localhost:8182/v1/'
+  napuleAPIURL: 'http://localhost:8182/v1',
+  mercadoPagoAPIURL: 'https://api.mercadopago.com/checkout'
 };
 
 /*
