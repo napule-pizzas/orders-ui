@@ -52,7 +52,6 @@ export class OrdersService {
       email: 'test_user_34339199@testuser.com'
     };
 
-    const email = environment.production ? customer.email : testCustomer.email;
     const excludedPaymentTypes = [{ id: 'ticket' }, { id: 'atm' }, { id: 'credit_card' }];
 
     const preference = {
@@ -61,7 +60,7 @@ export class OrdersService {
       payer: {
         name: customer.firstName,
         surname: customer.lastName,
-        email,
+        email: customer.email,
         phone: {
           area_code: customer.phone.areaCode,
           number: customer.phone.number
@@ -79,11 +78,11 @@ export class OrdersService {
         default_installments: 1
       },
       back_urls: {
-        success: `${origin}/payments/ok`,
-        pending: `${origin}/payments/pending`,
-        failure: `${origin}/payment-error`
+        success: `${origin}/payment/ok`,
+        pending: `${origin}/payment/pending`,
+        failure: `${origin}/payment/error`
       },
-      notification_url: `${this.napuleAPIURL}/webhook`,
+      notification_url: `${this.napuleAPIURL}/payments/webhook`,
       auto_return: 'approved'
     };
 
@@ -108,7 +107,7 @@ export class OrdersService {
         category_id: 'pizzas',
         quantity,
         currency_id: 'ARS',
-        unit_price: pizza.price
+        unit_price: 1 // pizza.price
       };
     });
   }
