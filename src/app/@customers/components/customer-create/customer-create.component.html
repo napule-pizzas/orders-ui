@@ -3,7 +3,7 @@
     <p class="text-center">Necesitamos tus datos para poder enviarte <br />las + ricas pizzas!</p>
 
     <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
-      <mat-form-field appearance="standard" fxFlex>
+      <mat-form-field appearance="standard">
         <mat-label>Nombre</mat-label>
         <input matInput autocomplete="off" formControlName="firstName" required />
         <mat-error matErrorMessages></mat-error>
@@ -23,34 +23,57 @@
         <mat-error matErrorMessages></mat-error>
       </mat-form-field>
 
-      <div fxFlex fxFlex.gt-md="50%" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
-        <mat-form-field appearance="standard" fxFlex>
+      <div
+        fxFlex
+        fxFlex.gt-md="50%"
+        fxLayout="row"
+        fxLayoutAlign="start center"
+        fxLayoutGap="8px"
+        formGroupName="phone"
+      >
+        <mat-form-field appearance="standard" fxFlex="40%">
+          <input
+            matInput
+            autocomplete="off"
+            formControlName="areaCode"
+            (input)="onPhoneInput()"
+            inputmode="tel"
+            placeholder="Cod. Área"
+          />
+        </mat-form-field>
+        <mat-form-field appearance="standard" fxFlex="60%">
           <mat-label>Teléfono</mat-label>
-          <input matInput autocomplete="off" formControlName="phone" inputmode="tel" required />
-          <mat-hint>cod. área y número</mat-hint>
+          <input matInput autocomplete="off" formControlName="localNumber" (input)="onPhoneInput()" inputmode="tel" />
           <mat-error matErrorMessages></mat-error>
         </mat-form-field>
       </div>
     </div>
+    <ng-container formGroupName="address">
+      <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
+        <mat-form-field appearance="standard">
+          <mat-label>Calle</mat-label>
+          <input matInput autocomplete="off" formControlName="street" required />
+          <mat-error matErrorMessages></mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Número</mat-label>
+          <input matInput autocomplete="off" formControlName="number" required />
+          <mat-error matErrorMessages></mat-error>
+        </mat-form-field>
+      </div>
 
-    <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
-      <mat-form-field appearance="standard" fxFlex>
-        <mat-label>Dirección</mat-label>
-        <input matInput autocomplete="off" formControlName="address" required />
-        <mat-hint>Calle, número, piso y departamento</mat-hint>
-        <mat-error matErrorMessages></mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="standard" fxFlex>
-        <mat-label>Localidad</mat-label>
-        <mat-select autocomplete="off" formControlName="city" required>
-          <mat-option *ngFor="let city of cities" [value]="city">
-            {{ city }}
-          </mat-option>
-        </mat-select>
-        <mat-error matErrorMessages></mat-error>
-      </mat-form-field>
-    </div>
+      <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
+        <mat-form-field appearance="standard" fxFlex>
+          <mat-label>Localidad</mat-label>
+          <mat-select autocomplete="off" formControlName="city">
+            <mat-option *ngFor="let city of cities" [value]="city">
+              {{ city.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error matErrorMessages></mat-error>
+        </mat-form-field>
+      </div>
+    </ng-container>
 
     <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
       <mat-form-field appearance="standard" fxFlex>

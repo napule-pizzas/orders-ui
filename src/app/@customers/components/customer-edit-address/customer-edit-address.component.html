@@ -7,16 +7,20 @@
   fxLayoutGap="16px"
 >
   <mat-form-field appearance="standard">
-    <mat-label>Dirección</mat-label>
-    <input matInput autocomplete="off" formControlName="address" />
-    <mat-hint>Calle, número, piso y departamento</mat-hint>
+    <mat-label>Calle</mat-label>
+    <input matInput autocomplete="off" formControlName="street" />
+  </mat-form-field>
+
+  <mat-form-field appearance="standard">
+    <mat-label>Numero</mat-label>
+    <input matInput autocomplete="off" formControlName="number" />
   </mat-form-field>
 
   <mat-form-field appearance="standard">
     <mat-label>Localidad</mat-label>
-    <mat-select autocomplete="off" formControlName="city">
+    <mat-select autocomplete="off" formControlName="city" [compareWith]="compareCities">
       <mat-option *ngFor="let city of cities" [value]="city">
-        {{ city }}
+        {{ city.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>

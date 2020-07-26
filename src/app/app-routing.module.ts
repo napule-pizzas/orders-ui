@@ -4,6 +4,7 @@ import { OrderCreateComponent } from './@orders/components/order-create/order-cr
 import { CustomerConfirmationComponent } from './@customers/components/customer-confirmation/customer-confirmation.component';
 import { CustomerTokenResolver } from './@customers/resolvers/customer-token.resolver';
 import { PageNotFoundComponent } from './@core/components/page-not-found/page-not-found.component';
+import { PaymentsComponent } from './@payments/components/payments/payments.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
     resolve: {
       customerToken: CustomerTokenResolver
     }
+  },
+  {
+    path: 'payments',
+    component: PaymentsComponent
   },
   { path: '**', component: PageNotFoundComponent }
 ];

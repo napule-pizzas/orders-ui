@@ -18,7 +18,7 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
   cancel: EventEmitter<void> = new EventEmitter<void>();
   customerForm: FormGroup;
   hidePassword = true;
-  cities: string[];
+  cities: Array<{ name: string; zipCode: string }>;
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -33,11 +33,19 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
       {
         firstName: [null, Validators.required],
         lastName: [null, Validators.required],
-        phone: [null, [Validators.required, NapuleValidators.phone_ar]],
-        mobile: null,
+        phone: this.fb.group(
+          {
+            areaCode: [null, Validators.required],
+            localNumber: [null, Validators.required]
+          },
+          { validators: NapuleValidators.phone_ar }
+        ),
         email: [null, [Validators.required, Validators.email]],
-        address: [null, Validators.required],
-        city: [null, Validators.required],
+        address: this.fb.group({
+          street: [null, Validators.required],
+          number: [null, Validators.required],
+          city: [null, Validators.required]
+        }),
         password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(12)]],
         confirmation: [null, Validators.required]
       },
@@ -49,6 +57,20 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
 
   get confirmation() {
     return this.customerForm.get('confirmation');
+  }
+
+  get localNumber() {
+    return this.customerForm.get('phone.localNumber');
+  }
+
+  get phone() {
+    return this.customerForm.get('phone');
+  }
+
+  onPhoneInput() {
+    if (this.phone.hasError('phone') && (this.phone.touched || this.phone.dirty)) {
+      this.localNumber.setErrors([{ phone: true }]);
+    }
   }
 
   onPasswordInput() {

@@ -1,9 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
 import { IOrder, ORDER_STATE } from '../../order.model';
 import { OrdersService } from '../../services/orders.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, switchMap } from 'rxjs/operators';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
 import { DOCUMENT } from '@angular/common';
+import { Subject } from 'rxjs';
+import { LoadingIndicatorService } from 'src/app/@core/services/loading-indicator.service';
 
 @Component({
   selector: 'nap-order-create',
@@ -15,12 +17,14 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
 
   displayActionButton: boolean;
   actionButtonText: string;
+  isLoading: Subject<boolean> = this.loadingIndicatorService.isLoading;
 
   ORDER_STATE = ORDER_STATE;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private cd: ChangeDetectorRef,
+    private loadingIndicatorService: LoadingIndicatorService,
     private ordersService: OrdersService
   ) {
     super();
@@ -82,11 +86,16 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
 
   private payOrder(order: IOrder) {
     this.ordersService
-      .payOrder(order)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(mpRes => {
-        console.log(mpRes);
-        // this.document.location.href = mpRes.init_point;
+      .saveOrder(order)
+      .pipe(
+        switchMap((savedOrder: IOrder) => {
+          return this.ordersService.payOrder(savedOrder);
+        }),
+        takeUntil(this.onDestroy$)
+      )
+      .subscribe((mpURL: string) => {
+        console.log(mpURL);
+        this.document.location.href = mpURL;
       });
   }
 }

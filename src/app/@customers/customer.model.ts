@@ -5,17 +5,21 @@ export interface ICustomer {
   email: string;
   phone: IPhone;
   address: IAddress;
-  city: string;
   password: string;
 }
 
 export interface IAddress {
-  zipCode: string;
   street: string;
-  number: number;
+  number: string;
+  city: ICity;
+}
+
+export interface ICity {
+  name: string;
+  zipCode: string;
 }
 
 export interface IPhone {
-  areaCode: number;
-  number: number;
+  areaCode: string;
+  number: string;
 }

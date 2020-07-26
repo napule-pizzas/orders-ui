@@ -1,6 +1,12 @@
 @import '~@angular/material/theming';
 
-@include mat-core();
+$nap-typography: mat-typography-config(
+  $font-family: 'Montserrat, Helvetica Neue, sans-serif'
+);
+
+// @include mat-base-typography($nap-typography);
+
+@include mat-core($nap-typography);
 
 $nap-palette-primary: (
   50: #ffffff,

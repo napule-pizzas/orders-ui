@@ -1,7 +1,7 @@
 <ng-container *ngIf="showLogin">
   <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="16px">
     <nap-customer-login></nap-customer-login>
-    <a href="javascript:void(0)" (click)="register()"> Registrarme </a>
+    <button mat-flat-button (click)="register()" [disabled]="isLoading | async">Registrarme</button>
   </div>
 </ng-container>
 
@@ -9,7 +9,7 @@
   <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="8px">
     <p>{{ order.customer.firstName }}, vamos a enviar tu pedido a:</p>
     <p>
-      {{ order.customer.address }}, {{ order.customer.city }}
+      {{ order.customer.address.street }} {{ order.customer.address.number }}, {{ order.customer.address.city.name }}
       <a href="javascript:void(0)" (click)="showEditCustomerAddressForm()">
         <mat-icon class="edit-customer-icon" color="accent">edit</mat-icon>
       </a>

@@ -57,7 +57,7 @@ export class OrderSelectItemsComponent extends BaseUnsubscriber implements OnIni
   }
 
   onDeliveryDateSelected(selectedDate: moment.Moment) {
-    this.order.deliveryDate = selectedDate.format(this.DATE_FORMAT);
+    this.order.deliveryDate = selectedDate.startOf('day').toDate();
     this.ordersService.order.next(this.order);
   }
 }

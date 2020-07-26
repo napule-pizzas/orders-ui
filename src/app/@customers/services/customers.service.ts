@@ -4,7 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, Subject, BehaviorSubject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { ICustomer } from '../customer.model';
+import { ICustomer, ICity } from '../customer.model';
 
 interface AuthResponse {
   token: string;
@@ -57,15 +57,15 @@ export class CustomersService {
       .pipe(catchError(err => throwError(err)));
   }
 
-  editCustomerAddress(payload: Partial<ICustomer>) {
+  editCustomerAddress(customerId: string, payload: Partial<ICustomer>) {
     return this.httpClient
-      .patch<ICustomer>(`${this.napuleAPIURL}/users/${payload.id}`, payload)
+      .patch<ICustomer>(`${this.napuleAPIURL}/users/${customerId}/address`, payload)
       .pipe(catchError(err => throwError(err)));
   }
 
   createCustomer(payload: Partial<ICustomer>) {
     return this.httpClient
-      .post<ICustomer>(`${this.napuleAPIURL}/users`, payload)
+      .post<ICustomer>(`${this.napuleAPIURL}/users`, { ...payload, type: 'CUSTOMER' })
       .pipe(catchError(err => throwError(err)));
   }
 
@@ -85,19 +85,17 @@ export class CustomersService {
     return this.httpClient.get(`${this.napuleAPIURL}/users/resend/${userId}`).pipe(catchError(err => throwError(err)));
   }
 
-  get cities() {
+  get cities(): ICity[] {
     return [
-      'Capital',
-      'Carrodilla',
-      'Chacras de Coria',
-      'Dorrego',
-      'Godoy Cruz',
-      'Las Heras',
-      'Luzuriaga',
-      'Villa Nueva'
-      // 'Capital',
+      { name: 'Capital', zipCode: '5500' },
+      { name: 'Carrodilla', zipCode: '5505' },
+      { name: 'Chacras de Coria', zipCode: '5505' },
+      { name: 'Dorrego', zipCode: '5519' },
+      { name: 'Godoy Cruz', zipCode: '5501' },
+      { name: 'Las Heras', zipCode: '5539' },
+      { name: 'Luzuriaga', zipCode: '5513' },
+      { name: 'Villa Nueva', zipCode: '5521' }
       // 'General Alvear',
-      // 'Godoy Cruz',
       // 'Guaymallén',
       // 'Junín',
       // 'La Paz',

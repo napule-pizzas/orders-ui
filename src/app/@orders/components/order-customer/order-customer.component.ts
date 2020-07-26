@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { takeUntil, distinctUntilChanged } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
 
 import { CustomersService } from 'src/app/@customers/services/customers.service';
 import { OrdersService } from '../../services/orders.service';
 import { IOrder } from '../../order.model';
+import { LoadingIndicatorService } from 'src/app/@core/services/loading-indicator.service';
 
 @Component({
   selector: 'nap-order-customer',
@@ -18,8 +19,13 @@ export class OrderCustomerComponent extends BaseUnsubscriber implements OnInit {
   showLogin: boolean;
   editingAddress = false;
   creatingCustomer = false;
+  isLoading: Subject<boolean> = this.loadingIndicatorService.isLoading;
 
-  constructor(private ordersService: OrdersService, private customersService: CustomersService) {
+  constructor(
+    private loadingIndicatorService: LoadingIndicatorService,
+    private ordersService: OrdersService,
+    private customersService: CustomersService
+  ) {
     super();
   }
 
