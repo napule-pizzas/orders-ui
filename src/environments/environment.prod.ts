@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  napuleAPIURL: 'https://api.napule.tk/v1'
+  napuleAPIURL: 'http://api.napule.tk/v1'
 };
