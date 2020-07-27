@@ -1,5 +1,8 @@
 <p>¡COMBINALAS COMO QUIERAS! <br />Pedido minimo de 2 pizzas</p>
-<nap-order-items-form [pizzas]="pizzas" (pizzasQuantityChange)="onPizzasQuantityChange($event)"></nap-order-items-form>
+<nap-order-items-form
+  [pizzas]="pizzas$ | async"
+  (pizzasQuantityChange)="onPizzasQuantityChange($event)"
+></nap-order-items-form>
 <div class="margin-sm-t">
   <mat-form-field class="full-width">
     <mat-select

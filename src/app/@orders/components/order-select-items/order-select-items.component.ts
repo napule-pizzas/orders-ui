@@ -6,6 +6,7 @@ import { IPizza } from 'src/app/@pizzas/pizza.model';
 import { IPizzaItem, IOrder } from '../../order.model';
 import { OrdersService } from '../../services/orders.service';
 import * as moment from 'moment';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'nap-order-select-items',
@@ -16,7 +17,7 @@ export class OrderSelectItemsComponent extends BaseUnsubscriber implements OnIni
   order: IOrder;
   today: moment.Moment = moment();
   availableDeliveryDates: moment.Moment[];
-  pizzas: IPizza[] = [];
+  pizzas$: Observable<IPizza[]>;
 
   DATE_FORMAT = 'dddd, DD/MM/YYYY';
 
@@ -27,13 +28,7 @@ export class OrderSelectItemsComponent extends BaseUnsubscriber implements OnIni
     this.ordersService.order.pipe(takeUntil(this.onDestroy$)).subscribe(order => {
       this.order = order;
     });
-    // TODO Resolve pizzas in the route resolver!!
-    this.pizzasService
-      .getPizzas()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((pizzas: IPizza[]) => {
-        this.pizzas = pizzas;
-      });
+    this.pizzas$ = this.pizzasService.getPizzas();
 
     this.availableDeliveryDates = this.ordersService.getAvailableDeliveryDates(this.today);
   }

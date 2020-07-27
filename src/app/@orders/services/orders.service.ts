@@ -13,7 +13,6 @@ import { IOrder, ORDER_STATE } from '../order.model';
 export class OrdersService {
   order: Subject<IOrder> = new ReplaySubject(null);
   private napuleAPIURL = environment.napuleAPIURL;
-  private mercadoPagoAPIURL = environment.mercadoPagoAPIURL;
 
   constructor(private httpClient: HttpClient, @Inject(DOCUMENT) private document: Document) {
     this.initializeOrder();

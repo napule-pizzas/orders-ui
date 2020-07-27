@@ -63,9 +63,16 @@ export class CustomersService {
       .pipe(catchError(err => throwError(err)));
   }
 
-  createCustomer(payload: Partial<ICustomer>) {
+  createCustomer(customer: any) {
+    const { firstName, lastName, email, phone, address, password, confirmation } = customer;
+    const payload = {
+      type: 'customer',
+      user: { firstName, lastName, email, phone, address },
+      password,
+      confirmation
+    };
     return this.httpClient
-      .post<ICustomer>(`${this.napuleAPIURL}/users`, { ...payload, type: 'CUSTOMER' })
+      .post<ICustomer>(`${this.napuleAPIURL}/users`, payload)
       .pipe(catchError(err => throwError(err)));
   }
 

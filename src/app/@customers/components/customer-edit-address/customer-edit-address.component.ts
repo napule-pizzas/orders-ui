@@ -4,7 +4,6 @@ import { ICustomer, ICity } from '../../customer.model';
 import { CustomersService } from '../../services/customers.service';
 import { takeUntil } from 'rxjs/operators';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
-import { SSL_OP_NO_TLSv1_1 } from 'constants';
 
 @Component({
   selector: 'nap-customer-edit-address',
