@@ -5,7 +5,6 @@ export interface ICustomer {
   email: string;
   phone: IPhone;
   address: IAddress;
-  password: string;
 }
 
 export interface IAddress {

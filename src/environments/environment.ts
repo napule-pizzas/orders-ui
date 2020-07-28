@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  napuleAPIURL: 'http://localhost:8182/v1'
+  napuleAPIURL: 'http://localhost:8182/v1',
+  reCaptchaKey: '6Ld-pLYZAAAAAM2cGZQ3oQgmMKF0UC-3gCjYcBRf'
 };
 
 /*

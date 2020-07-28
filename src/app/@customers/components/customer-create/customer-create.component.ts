@@ -1,12 +1,21 @@
-import { Component, OnInit, ViewEncapsulation, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { CustomersService } from '../../services/customers.service';
-import { NapuleValidators } from 'src/app/@core/classes/custom.validators';
-import { takeUntil } from 'rxjs/operators';
-import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
-import { ICustomer } from '../../customer.model';
-import { OrdersService } from 'src/app/@orders/services/orders.service';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { takeUntil, switchMap, delay, tap, map, catchError } from 'rxjs/operators';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { NapuleValidators } from 'src/app/@core/classes/custom.validators';
+import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
+import { OrdersService } from 'src/app/@orders/services/orders.service';
+import { CustomersService } from '../../services/customers.service';
+import { ICustomer } from '../../customer.model';
+import { Observable, of, throwError } from 'rxjs';
+
+function existingEmailValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+  return this.customersService.emailExists(control.value).pipe(
+    map(exists => (exists ? { emailUsed: true } : null)),
+    catchError(err => throwError(err))
+  );
+}
 
 @Component({
   selector: 'nap-customer-create',
@@ -22,6 +31,7 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
+    private recaptchaV3Service: ReCaptchaV3Service,
     private orderService: OrdersService,
     private customersService: CustomersService
   ) {
@@ -40,7 +50,14 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
           },
           { validators: NapuleValidators.phone_ar }
         ),
-        email: [null, [Validators.required, Validators.email]],
+        email: [
+          null,
+          {
+            validators: [Validators.required, Validators.email],
+            asyncValidators: existingEmailValidator.bind(this),
+            updateOn: 'blur'
+          }
+        ],
         address: this.fb.group({
           street: [null, Validators.required],
           number: [null, Validators.required],
@@ -80,16 +97,26 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
   }
 
   onSubmit() {
-    this.customersService
-      .createCustomer(this.customerForm.value)
-      .pipe(takeUntil(this.onDestroy$))
+    const intendedAction = 'register';
+    this.recaptchaV3Service
+      .execute(intendedAction)
+      .pipe(
+        takeUntil(this.onDestroy$),
+        switchMap((token: string) => {
+          return this.customersService.createCustomer(this.customerForm.value, { token, intendedAction });
+        })
+      )
       .subscribe(
         (customer: ICustomer) => {
           this.snackBar.open(`${customer.firstName} gracias por registrate. Revisá el correo.`);
           this.orderService.initializeOrder();
         },
         err => {
-          console.log('Le error', err);
+          if (err.path === 'user.email' && err.kind === 'unique') {
+            this.snackBar.open('Correo electrónico ya registrado');
+          } else {
+            this.snackBar.open('Oops, algo salio mal');
+          }
         }
       );
   }

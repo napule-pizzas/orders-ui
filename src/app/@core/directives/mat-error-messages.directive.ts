@@ -48,6 +48,9 @@ export class MatErrorMessagesDirective implements AfterViewInit {
           case 'passwordMissmatch':
             this.error = 'Contraseña y confirmación no conciden';
             break;
+          case 'emailUsed':
+            this.error = 'Ya está registrado';
+            break;
           default:
             console.log(controlErrors);
             break;

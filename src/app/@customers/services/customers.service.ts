@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable, Subject, BehaviorSubject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { IReCAPTCHAV3Options } from 'src/app/@core/napule.d.type';
 import { ICustomer, ICity } from '../customer.model';
 
 interface AuthResponse {
@@ -51,6 +52,11 @@ export class CustomersService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
+  emailExists(value: string): Observable<boolean> {
+    const params = new HttpParams({ fromObject: { email: value } });
+    return this.httpClient.get<boolean>(`${this.napuleAPIURL}/users`, { params });
+  }
+
   getCustomer(customerId: string) {
     return this.httpClient
       .get<ICustomer>(`${this.napuleAPIURL}/users/${customerId}`)
@@ -63,9 +69,10 @@ export class CustomersService {
       .pipe(catchError(err => throwError(err)));
   }
 
-  createCustomer(customer: any) {
+  createCustomer(customer: any, reCAPTCHAOptions: IReCAPTCHAV3Options) {
     const { firstName, lastName, email, phone, address, password, confirmation } = customer;
     const payload = {
+      reCAPTCHAOptions,
       type: 'customer',
       user: { firstName, lastName, email, phone, address },
       password,
