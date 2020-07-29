@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPasswordStrengthModule } from '@angular-material-extensions/password-strength';
 import { CoreModule } from '../@core/core.module';
 import { CustomerLoginComponent } from './components/customer-login/customer-login.component';
 import { CustomerEditAddressComponent } from './components/customer-edit-address/customer-edit-address.component';
@@ -36,7 +37,14 @@ const Components = [
 
 @NgModule({
   declarations: [...Components],
-  imports: [CommonModule, ReactiveFormsModule, FlexLayoutModule, ...AngularMaterialModules, CoreModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    ...AngularMaterialModules,
+    MatPasswordStrengthModule,
+    CoreModule
+  ],
   exports: [...Components]
 })
 export class CustomersModule {}

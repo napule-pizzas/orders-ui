@@ -37,6 +37,7 @@ export class MatErrorMessagesDirective implements AfterViewInit {
             break;
           case 'phone':
           case 'email':
+          case 'pattern':
             this.error = 'Esto no está bien';
             break;
           case 'minlength':
@@ -45,8 +46,8 @@ export class MatErrorMessagesDirective implements AfterViewInit {
           case 'maxlength':
             this.error = `Deben ser ${controlErrors[firstValidationError].requiredLength} caracteres máximo`;
             break;
-          case 'passwordMissmatch':
-            this.error = 'Contraseña y confirmación no conciden';
+          case 'notConfirmed':
+            this.error = 'No es igual a la contraseña';
             break;
           case 'emailUsed':
             this.error = 'Ya está registrado';

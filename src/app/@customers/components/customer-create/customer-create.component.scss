@@ -1,3 +1,16 @@
-.register-field {
-  width: 100%;
+nap-customer-create {
+  .mat-icon.password-info {
+    font-size: 16px;
+    font-weight: 300 !important;
+  }
+
+  mat-password-strength .mat-progress-bar-fill::after {
+    background-color: var(--color-success);
+  }
+
+  mat-password-strength-info {
+    .mat-icon.mat-primary {
+      color: var(--color-success);
+    }
+  }
 }

@@ -1,7 +1,6 @@
 import { Component, Input, ViewChild, TemplateRef, EventEmitter, Output } from '@angular/core';
 import { IPizza } from 'src/app/@pizzas/pizza.model';
 import { MatDialog } from '@angular/material/dialog';
-import { OrdersService } from '../../services/orders.service';
 import { IPizzaItem } from '../../order.model';
 
 @Component({
@@ -18,7 +17,7 @@ export class OrderItemsFormComponent {
 
   @ViewChild('pizzaDetailsDialog') pizzaDetailsDialog: TemplateRef<any>;
 
-  constructor(private matDialog: MatDialog, private orderService: OrdersService) {}
+  constructor(private matDialog: MatDialog) {}
 
   showDetails(pizza: IPizza) {
     this.matDialog.open(this.pizzaDetailsDialog, { data: { pizza } });

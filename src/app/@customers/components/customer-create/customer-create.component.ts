@@ -1,14 +1,17 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { takeUntil, switchMap, delay, tap, map, catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { takeUntil, switchMap, map, catchError } from 'rxjs/operators';
 import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { NapuleValidators } from 'src/app/@core/classes/custom.validators';
 import { BaseUnsubscriber } from 'src/app/@core/classes/BaseUnsubscriber';
 import { OrdersService } from 'src/app/@orders/services/orders.service';
 import { CustomersService } from '../../services/customers.service';
 import { ICustomer } from '../../customer.model';
-import { Observable, of, throwError } from 'rxjs';
+import {
+  MatPasswordStrengthComponent,
+} from '@angular-material-extensions/password-strength';
 
 function existingEmailValidator(control: AbstractControl): Observable<ValidationErrors | null> {
   return this.customersService.emailExists(control.value).pipe(
@@ -20,14 +23,19 @@ function existingEmailValidator(control: AbstractControl): Observable<Validation
 @Component({
   selector: 'nap-customer-create',
   templateUrl: './customer-create.component.html',
-  styleUrls: ['./customer-create.component.scss']
+  styleUrls: ['./customer-create.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit {
+export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit, AfterViewInit {
   @Output()
   cancel: EventEmitter<void> = new EventEmitter<void>();
   customerForm: FormGroup;
-  hidePassword = true;
+  showPasswordInfo: boolean;
   cities: Array<{ name: string; zipCode: string }>;
+
+  @ViewChild('passwordComponent', { static: true })
+  passwordComponent: MatPasswordStrengthComponent;
+
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
@@ -39,40 +47,46 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
   }
 
   ngOnInit(): void {
-    this.customerForm = this.fb.group(
-      {
-        firstName: [null, Validators.required],
-        lastName: [null, Validators.required],
-        phone: this.fb.group(
-          {
-            areaCode: [null, Validators.required],
-            localNumber: [null, Validators.required]
-          },
-          { validators: NapuleValidators.phone_ar }
-        ),
-        email: [
-          null,
-          {
-            validators: [Validators.required, Validators.email],
-            asyncValidators: existingEmailValidator.bind(this),
-            updateOn: 'blur'
-          }
-        ],
-        address: this.fb.group({
-          street: [null, Validators.required],
-          number: [null, Validators.required],
-          city: [null, Validators.required]
-        }),
-        password: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(12)]],
-        confirmation: [null, Validators.required]
-      },
-      { validators: NapuleValidators.passwordEquals }
-    );
+    this.customerForm = this.fb.group({
+      firstName: [null, Validators.required],
+      lastName: [null, Validators.required],
+      phone: this.fb.group(
+        {
+          areaCode: [null, Validators.required],
+          localNumber: [null, Validators.required]
+        },
+        { validators: NapuleValidators.phone_ar }
+      ),
+      email: [
+        null,
+        {
+          validators: [Validators.required, Validators.email],
+          asyncValidators: existingEmailValidator.bind(this),
+          updateOn: 'blur'
+        }
+      ],
+      address: this.fb.group({
+        street: [null, Validators.required],
+        number: [null, Validators.required],
+        city: [null, Validators.required]
+      })
+    });
 
     this.cities = this.customersService.cities;
   }
 
-  get confirmation() {
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.customerForm.addControl('password', this.passwordComponent.passwordFormControl);
+      this.customerForm.addControl('confirmation', this.passwordComponent.passwordConfirmationFormControl);
+    }, 0);
+  }
+
+  get passwordControl() {
+    return this.customerForm.get('password');
+  }
+
+  get confirmationControl() {
     return this.customerForm.get('confirmation');
   }
 
@@ -87,12 +101,6 @@ export class CustomerCreateComponent extends BaseUnsubscriber implements OnInit 
   onPhoneInput() {
     if (this.phone.hasError('phone') && (this.phone.touched || this.phone.dirty)) {
       this.localNumber.setErrors([{ phone: true }]);
-    }
-  }
-
-  onPasswordInput() {
-    if (this.customerForm.hasError('passwordMissmatch')) {
-      this.confirmation.setErrors([{ passwordMissmatch: true }]);
     }
   }
 

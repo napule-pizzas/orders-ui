@@ -76,47 +76,48 @@
     </ng-container>
 
     <div fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start stretch" fxLayoutGap.gt-md="8px">
-      <mat-form-field appearance="standard" fxFlex>
+      <mat-form-field appearance="standard" fxFlex="50%">
         <mat-label>Contraseña</mat-label>
-        <input
-          matInput
-          autocomplete="off"
-          formControlName="password"
-          [type]="hidePassword ? 'password' : 'text'"
-          (input)="onPasswordInput()"
-          required
-        />
-        <!-- <button
-          type="button"
-          matSuffix
-          mat-icon-button
-          (click)="hidePassword = !hidePassword"
-          [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hidePassword"
-        >
-          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-        </button> -->
-        <mat-hint>6 a 12 caracteres</mat-hint>
+        <input matInput #passwordInput [type]="toggle.type" [formControl]="passwordComponent.passwordFormControl" />
+        <mat-pass-toggle-visibility #toggle matSuffix [tabindex]="-1"></mat-pass-toggle-visibility>
         <mat-error matErrorMessages></mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="standard" fxFlex>
+      <mat-form-field appearance="standard" fxFlex="50%">
         <mat-label>Confirmación</mat-label>
         <input
           matInput
-          autocomplete="off"
-          formControlName="confirmation"
-          [type]="hidePassword ? 'password' : 'text'"
-          (input)="onPasswordInput()"
-          required
+          #confirmationInput
+          [type]="toggle.type"
+          [formControl]="passwordComponent.passwordConfirmationFormControl"
+          placeholder="Password"
         />
-
         <mat-error matErrorMessages></mat-error>
       </mat-form-field>
     </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap.gt-md="8px" class="margin-xs-t">
+      <mat-password-strength class="green" fxFlex #passwordComponent [password]="passwordInput.value">
+      </mat-password-strength>
+      <mat-icon
+        class="password-info"
+        aria-label="mostrar información de contraseña"
+        (click)="showPasswordInfo = !showPasswordInfo"
+        >help_outline</mat-icon
+      >
+    </div>
+    <mat-password-strength-info
+      *ngIf="showPasswordInfo"
+      lowerCaseCriteriaMsg="Al menos una minúscula"
+      upperCaseCriteriaMsg="Al menos una mayúscula"
+      digitsCriteriaMsg="Al menos un número"
+      specialCharsCriteriaMsg="Al menos un caracter especial"
+      minCharsCriteriaMsg="Al menos 8 caracteres"
+      [passwordComponent]="passwordComponent"
+    >
+    </mat-password-strength-info>
 
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px" style="margin: 16px 0;">
-      <button mat-raised-button color="primary" [disabled]="customerForm.invalid">
+      <button mat-raised-button color="primary" [disabled]="customerForm.invalid || customerForm.pending">
         ACEPTAR
       </button>
       <button mat-raised-button type="button" (click)="goBack()">
