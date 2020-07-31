@@ -22,7 +22,7 @@
   "dataGroups": [
     {
       "name": "napule-api",
-      "urls": ["https://api.napule.tk/pizzas"],
+      "urls": ["https://api.napule.tk/pizzas/"],
       "cacheConfig": {
         "strategy": "performance",
         "maxSize": 100,
