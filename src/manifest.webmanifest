@@ -1,9 +1,9 @@
 {
-  "name": "napule-orders-ui",
-  "short_name": "napule-orders-ui",
-  "theme_color": "#1976d2",
+  "name": "Pedidos Napule",
+  "short_name": "Napule",
+  "theme_color": "#c23337",
   "background_color": "#fafafa",
-  "display": "standalone",
+  "display": "fullscreen",
   "scope": "./",
   "start_url": "./",
   "icons": [
