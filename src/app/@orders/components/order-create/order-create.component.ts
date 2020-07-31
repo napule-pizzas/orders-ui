@@ -15,6 +15,7 @@ import { LoadingIndicatorService } from 'src/app/@core/services/loading-indicato
 export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
   order: IOrder;
 
+  disableActionButton: boolean;
   displayActionButton: boolean;
   actionButtonText: string;
   isLoading: Subject<boolean> = this.loadingIndicatorService.isLoading;
@@ -57,14 +58,17 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
     switch (this.order.state) {
       case ORDER_STATE.SELECTING_ITEMS:
         this.actionButtonText = 'PEDIR';
-        this.displayActionButton = this.order.totalItems >= 2 && !!this.order.deliveryDate;
+        this.disableActionButton = this.order.totalItems < 2 || !this.order.deliveryDate;
+        this.displayActionButton = true;
         break;
       case ORDER_STATE.SETTING_CUSTOMER_DATA:
         this.actionButtonText = 'PAGAR';
+        this.disableActionButton = !this.order.customer;
         this.displayActionButton = !!this.order.customer;
         break;
       case ORDER_STATE.PAYMENT_PENDING:
         this.actionButtonText = '';
+        this.disableActionButton = true;
         this.displayActionButton = false;
         this.payOrder(this.order);
         break;
@@ -78,6 +82,8 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
       this.order,
       'Display AB',
       this.displayActionButton,
+      'Disabled AB',
+      this.disableActionButton,
       this.actionButtonText
     );
 

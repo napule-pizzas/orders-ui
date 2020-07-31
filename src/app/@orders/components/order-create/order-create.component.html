@@ -8,7 +8,12 @@
     </div>
   </ng-container>
 
-  <button *ngIf="displayActionButton" mat-raised-button (click)="nextState()" [disabled]="isLoading | async">
+  <button
+    *ngIf="displayActionButton"
+    mat-raised-button
+    (click)="nextState()"
+    [disabled]="disableActionButton || (isLoading | async)"
+  >
     {{ actionButtonText }}
   </button>
 </div>
