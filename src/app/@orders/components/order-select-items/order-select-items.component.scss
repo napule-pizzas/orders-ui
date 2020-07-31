@@ -1,0 +1,25 @@
+.order-conditions {
+  margin-bottom: 24px;
+  h2 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 18px;
+    letter-spacing: 0.5px;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+}
+
+.order-items-count {
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+.order-items-total {
+  font-size: 18px;
+  font-weight: 700;
+}

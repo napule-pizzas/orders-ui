@@ -1,5 +1,9 @@
-<p>¡COMBINALAS COMO QUIERAS! <br />Pedido minimo de 2 pizzas</p>
+<div class="order-conditions text-center">
+  <h2>¡COMBINALAS COMO QUIERAS!</h2>
+  <h3>PEDIDO MINIMO: 2 PIZZAS</h3>
+</div>
 <nap-order-items-form
+  f
   [pizzas]="pizzas$ | async"
   (pizzasQuantityChange)="onPizzasQuantityChange($event)"
 ></nap-order-items-form>
@@ -16,9 +20,9 @@
     </mat-select>
   </mat-form-field>
 </div>
-<p>
+<div class="order-items-count">
   Pizzas en el pedido: <span *ngIf="order.totalItems">{{ order.totalItems }}</span>
-</p>
-<p>
-  Total: <span *ngIf="order.totalAmount">${{ order.totalAmount }}</span>
-</p>
+</div>
+<div class="order-items-total">
+  TOTAL: <span *ngIf="order.totalAmount">${{ order.totalAmount }}</span>
+</div>
