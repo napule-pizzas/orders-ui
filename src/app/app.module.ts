@@ -15,6 +15,7 @@ import { OrdersModule } from './@orders/orders.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,7 +35,8 @@ import { environment } from '../environments/environment';
     }),
     RecaptchaV3Module,
     CoreModule,
-    OrdersModule
+    OrdersModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
