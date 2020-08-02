@@ -70,7 +70,7 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
         this.actionButtonText = '';
         this.disableActionButton = true;
         this.displayActionButton = false;
-        this.payOrder(this.order);
+        this.createMPPreference(this.order);
         break;
       default:
         break;
@@ -90,17 +90,16 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
     this.cd.detectChanges();
   }
 
-  private payOrder(order: IOrder) {
+  private createMPPreference(order: IOrder) {
     this.ordersService
-      .saveOrder(order)
+      .save(order)
       .pipe(
         switchMap((savedOrder: IOrder) => {
-          return this.ordersService.payOrder(savedOrder);
+          return this.ordersService.createPreference(savedOrder);
         }),
         takeUntil(this.onDestroy$)
       )
       .subscribe((mpURL: string) => {
-        console.log(mpURL);
         this.document.location.href = mpURL;
       });
   }

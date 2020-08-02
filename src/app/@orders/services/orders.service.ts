@@ -36,14 +36,14 @@ export class OrdersService {
     return availableDeliveryDates.sort((a, b) => a.valueOf() - b.valueOf());
   }
 
-  saveOrder(payload: Partial<IOrder>): Observable<IOrder> {
+  save(payload: Partial<IOrder>): Observable<IOrder> {
     return this.httpClient
       .post<IOrder>(`${this.napuleAPIURL}/orders`, payload)
       .pipe(catchError(err => throwError(err)));
   }
 
-  payOrder(payload: IOrder): Observable<string> {
-    return this.httpClient.post(`${this.napuleAPIURL}/payments`, payload).pipe(
+  createPreference(payload: IOrder): Observable<string> {
+    return this.httpClient.post(`${this.napuleAPIURL}/preference`, payload).pipe(
       map((mpResponse: any) => mpResponse.init_point),
       catchError(err => throwError(err))
     );
