@@ -1,1 +1,13 @@
-<p>payments works! {{ status }}</p>
+<ng-container *ngIf="!showPaymentProblem && order">
+  Gracias! Tu pedido de
+  <span *ngfor="let item of order.items; last as isLast">
+    {{ item.quantity }} {{ item.pizza.name }}{{ isLast ? '' : ', ' }}
+  </span>
+  Va a ser entregado el {{ order?.deliveryDate | date: "EEEE, d 'de ' MMMM" }}
+</ng-container>
+
+<ng-container *ngIf="showPaymentProblem">
+  Oops! Hubo un problema con el pago.
+
+  <button mat-raised-button (click)="retry()">Reintentar</button>
+</ng-container>

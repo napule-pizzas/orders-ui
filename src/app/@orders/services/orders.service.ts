@@ -36,9 +36,21 @@ export class OrdersService {
     return availableDeliveryDates.sort((a, b) => a.valueOf() - b.valueOf());
   }
 
-  save(payload: Partial<IOrder>): Observable<IOrder> {
+  get(orderId: string) {
+    return this.httpClient
+      .get<IOrder>(`${this.napuleAPIURL}/orders/${orderId}`)
+      .pipe(catchError(err => throwError(err)));
+  }
+
+  create(payload: Partial<IOrder>): Observable<IOrder> {
     return this.httpClient
       .post<IOrder>(`${this.napuleAPIURL}/orders`, payload)
+      .pipe(catchError(err => throwError(err)));
+  }
+
+  update(payload: Partial<IOrder>): Observable<IOrder> {
+    return this.httpClient
+      .patch<IOrder>(`${this.napuleAPIURL}/orders/${payload.id}`, payload)
       .pipe(catchError(err => throwError(err)));
   }
 

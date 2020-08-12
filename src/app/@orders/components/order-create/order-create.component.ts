@@ -76,23 +76,15 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
         break;
     }
 
-    console.log(
-      '#manageOrderState',
-      'Order',
-      this.order,
-      'Display AB',
-      this.displayActionButton,
-      'Disabled AB',
-      this.disableActionButton,
-      this.actionButtonText
-    );
+    console.log('#manageOrderState', 'Order', this.order);
 
     this.cd.detectChanges();
   }
 
   private createMPPreference(order: IOrder) {
-    this.ordersService
-      .save(order)
+    const order$ = order.id ? this.ordersService.update(order) : this.ordersService.create(order);
+
+    order$
       .pipe(
         switchMap((savedOrder: IOrder) => {
           return this.ordersService.createPreference(savedOrder);
