@@ -65,11 +65,19 @@ export class OrderCreateComponent extends BaseUnsubscriber implements OnInit {
         this.actionButtonText = 'PAGAR';
         this.disableActionButton = !this.order.customer;
         this.displayActionButton = !!this.order.customer;
+        if (this.order.customer) {
+          this.ordersService.save(this.order)
+            .subscribe((savedOrder: IOrder) => {
+              //localStorage.setItem("currentOrderId", savedOrder["_id"]);
+              this.order = savedOrder;
+            });
+        }
         break;
       case ORDER_STATE.PAYMENT_PENDING:
         this.actionButtonText = '';
         this.disableActionButton = true;
         this.displayActionButton = false;
+        this.ordersService.update(this.order).subscribe();
         this.createMPPreference(this.order);
         break;
       default:

@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Subject, ReplaySubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -39,6 +39,15 @@ export class OrdersService {
   save(payload: Partial<IOrder>): Observable<IOrder> {
     return this.httpClient
       .post<IOrder>(`${this.napuleAPIURL}/orders`, payload)
+      .pipe(catchError(err => throwError(err)));
+  }
+
+  update(payload: Partial<IOrder>): Observable<IOrder> {    
+    let id = payload["id"];
+    delete payload["_id"];
+    delete payload.id;
+    return this.httpClient
+      .patch<IOrder>(`${this.napuleAPIURL}/orders/${id}`, payload)
       .pipe(catchError(err => throwError(err)));
   }
 
